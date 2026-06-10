@@ -9,91 +9,71 @@
 </head>
 <body>
 
-<div class="dashboard-layout">
+<div class="app-container">
 
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      cy<span class="dot">.</span>rias
+  <header id="bar-brand">
+    <div class="logo" onclick="go('home')">cy<span class="dot">.</span>rias</div>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="search" placeholder="Rechercher un document, un outil...">
     </div>
-    
-    <nav class="sidebar-nav">
-      <button class="nav-item active" data-target="home" onclick="go('home')">
-        <span class="nav-icon">📊</span> Accueil
-      </button>
-      <button class="nav-item" data-target="admin" onclick="go('admin')">
-        <span class="nav-icon">⚙️</span> Configuration
-      </button>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="user-widget">
-        <div class="avatar">JD</div>
-        <div class="user-info">
-          <span class="username">Jean Dupont</span>
-          <span class="user-role">Consultant</span>
-        </div>
-      </div>
+    <div class="user-profile">
+      <span class="username">Jean Dupont</span>
+      <div class="avatar">JD</div>
     </div>
-  </aside>
+  </header>
 
-  <main class="main-content">
+  <nav id="bar-nav">
+    <button class="nav-btn active" data-target="home" onclick="go('home')">Accueil</button>
+    <button class="nav-btn" data-target="admin" onclick="go('admin')">Administration</button>
+  </nav>
+
+  <main id="main">
     
-    <header class="top-bar">
-      <div class="search-wrapper">
-        <span class="search-hint">🔍</span>
-        <input type="search" placeholder="Rechercher un outil, un projet, un document...">
-      </div>
-    </header>
-
     <section id="page-home" class="page active">
-      <div class="welcome-header">
-        <h1>Bonjour, Jean.</h1>
-        <p>Voici l'état du cabinet aujourd'hui.</p>
+      <div class="hero">
+        <h1>Bonjour, l'équipe <span>CYRIAS</span> !</h1>
+        <p>Bienvenue sur votre nouvel intranet. Centralisez vos outils et suivez les actualités majeures du cabinet en un coup d'œil.</p>
       </div>
 
-      <section class="dashboard-section">
-        <h2 class="section-caption">Applications & Outils</h2>
-        <div id="sc-list" class="tools-grid">
+      <section class="shortcuts-section">
+        <h2 class="section-title">Vos raccourcis favoris</h2>
+        <div id="sc-list" class="shortcuts-grid">
           </div>
       </section>
 
-      <section class="dashboard-section">
-        <div class="columns-grid">
-          
-          <div class="column">
-            <h2 class="section-caption">Actualités Projets</h2>
-            <div id="news-projets" class="cards-stack">
-              </div>
-          </div>
+      <div class="news-grid">
+        <article class="news-column">
+          <h2 class="section-title">News projets</h2>
+          <div id="news-projets" class="news-container">
+            </div>
+        </article>
 
-          <div class="column">
-            <h2 class="section-caption">Vie de l'entreprise</h2>
-            <div id="news-vie" class="cards-stack">
-              </div>
-          </div>
-
-        </div>
-      </section>
+        <article class="news-column">
+          <h2 class="section-title">Vie de l'entreprise</h2>
+          <div id="news-vie" class="news-container">
+            </div>
+        </article>
+      </div>
     </section>
 
     <section id="page-admin" class="page">
-      <div class="welcome-header">
-        <h1>Configuration</h1>
-        <p>Gérez les accès et le contenu de l'intranet.</p>
-      </div>
-
-      <div class="admin-card">
-        <h3>Ajouter un outil rapide</h3>
-        <form id="form-add-shortcut" class="modern-form">
-          <div class="input-group">
-            <label for="sc-name">Nom de l'application</label>
-            <input type="text" id="sc-name" placeholder="Ex: Ivalua Sandbox" required>
+      <div class="admin-box">
+        <header class="admin-header">
+          <h2>Console d'administration</h2>
+          <p>Ajoutez des modules et contrôlez les publications de la page d'accueil.</p>
+        </header>
+        
+        <form id="form-add-shortcut">
+          <div class="form-group">
+            <label for="sc-name">Nom du raccourci</label>
+            <input type="text" id="sc-name" placeholder="Ex: Salesforce" required>
           </div>
-          <div class="input-group">
-            <label for="sc-url">Lien sécurisé (URL)</label>
+          <div class="form-group">
+            <label for="sc-url">URL du lien</label>
             <input type="url" id="sc-url" placeholder="https://..." required>
           </div>
-          <button type="submit" class="btn-primary">Enregistrer l'outil</button>
+          <button class="btn-submit" type="submit">Ajouter l'outil</button>
         </form>
       </div>
     </section>
