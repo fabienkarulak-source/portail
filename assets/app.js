@@ -1,109 +1,96 @@
-// ─── 1. DONNÉES DE SIMULATION (Outils & Actus) ───
-// J'ai mis des vrais liens pour tester que les clics fonctionnent
-const toolsData = [
-    { name: "Monday Dashboard", url: "https://monday.com" },
-    { name: "SuitePro-G", url: "https://google.com" },
-    { name: "Ivalua Client", url: "https://ivalua.com" },
-    { name: "MS Teams Space", url: "https://teams.microsoft.com" }
+// Données de simulation (Mock data)
+const initialShortcuts = [
+    { name: "Monday", url: "https://monday.com", icon: "📊" },
+    { name: "SuitePro-G", url: "https://google.com", icon: "🛠️" },
+    { name: "Ivalua", url: "https://ivalua.com", icon: "🔷" },
+    { name: "MS Teams", url: "https://teams.microsoft.com", icon: "💬" }
 ];
 
-const newsData = {
+const initialNews = {
     projets: [
-        { client: "Dixstone Group", date: "Juin 2026", title: "Signature d'un nouveau client", desc: "Architecture globale du processus achat, intégration du module sourcing et contrats." },
-        { client: "Audemars Piguet", date: "Mai 2026", title: "Mise en production validée", desc: "Transition effectuée avec succès sur les périmètres de facturation usine." }
+        { client: "Dixstone", date: "Juin 2026", title: "Signature d'un nouveau client", desc: "Déploiement des processus fournisseurs, sourcing, contrat et catalogues.", tag: "Projet", type: "blue" },
+        { client: "Audemars Piguet", date: "Mai 2026", title: "Mise en production du GRNI", desc: "Évolutions suite à la mise en production des modules demandes d'achats à la facturation.", tag: "Production", type: "blue" }
     ],
     vie: [
-        { client: "Ressources Humaines", date: "Ce matin", title: "Arrivée de Rabah Teffahi", desc: "L'équipe conseil s'agrandit à Massy. Bienvenue à notre nouveau Consultant Data Analyst." }
+        { client: "RH", date: "Récent", title: "Bienvenue à Rabah Teffahi", desc: "Nous avons le plaisir d'accueillir Rabah qui rejoint l'équipe de Massy en tant que consultant.", tag: "Équipe", type: "green" }
     ]
 };
 
-// ─── 2. MOTEUR DE NAVIGATION (Accessible globalement) ───
+// 🧭 Système de Navigation Interne 100% sécurisé
 window.go = function(pageId) {
-    console.log("Navigation vers :", pageId); // Pour vérifier dans la console du navigateur
-
-    // 1. Gestion des pages (Vues)
-    const pages = document.querySelectorAll('.page');
-    if (pages.length > 0) {
-        pages.forEach(p => p.classList.remove('active'));
-    }
+    // 1. Cacher toutes les pages
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
     
+    // 2. Afficher la page ciblée
     const targetPage = document.getElementById(`page-${pageId}`);
-    if (targetPage) {
-        targetPage.classList.add('active');
-    } else {
-        console.warn(`La page #page-${pageId} n'existe pas dans le HTML.`);
-    }
+    if (targetPage) targetPage.classList.add('active');
 
-    // 2. Gestion de l'état visuel des boutons de la Sidebar
-    const navItems = document.querySelectorAll('.nav-item');
-    if (navItems.length > 0) {
-        navItems.forEach(btn => btn.classList.remove('active'));
-    }
-
-    const activeBtn = document.querySelector(`[data-target="${pageId}"]`);
-    if (activeBtn) {
-        activeBtn.classList.add('active');
-    }
+    // 3. Mettre à jour l'état visuel du menu en haut
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-target') === pageId) {
+            btn.classList.add('active');
+        }
+    });
 };
 
-// ─── 3. INJECTION DU CONTENU DANS LA PAGE ───
-function setupDashboard() {
-    // Injection des outils / raccourcis
+// 💉 Hydratation de l'interface
+function renderApp() {
+    // 1. Raccourcis
     const scList = document.getElementById('sc-list');
     if (scList) {
-        scList.innerHTML = toolsData.map(tool => `
-            <a href="${tool.url}" target="_blank" class="tool-card">
-                <div class="icon-indicator"></div>
-                <span>${tool.name}</span>
+        scList.innerHTML = initialShortcuts.map(sc => `
+            <a href="${sc.url}" target="_blank" class="shortcut-card">
+                <span>${sc.icon}</span> ${sc.name}
             </a>
         `).join('');
     }
 
-    // Injection des news projets
-    const projectsContainer = document.getElementById('news-projets');
-    if (projectsContainer) {
-        projectsContainer.innerHTML = newsData.projets.map(item => `
-            <div class="item-card">
-                <div class="item-card-header"><span>${item.client}</span><span>${item.date}</span></div>
+    // 2. News Projets
+    const newsProjets = document.getElementById('news-projets');
+    if (newsProjets) {
+        newsProjets.innerHTML = initialNews.projets.map(item => `
+            <div class="news-card">
+                <div class="news-meta"><span>${item.client}</span><span>${item.date}</span></div>
                 <h3>${item.title}</h3>
                 <p>${item.desc}</p>
+                <div style="margin-top: 12px;"><span class="badge ${item.type}">${item.tag}</span></div>
             </div>
         `).join('');
     }
 
-    // Injection des news vie de l'entreprise
-    const vieContainer = document.getElementById('news-vie');
-    if (vieContainer) {
-        vieContainer.innerHTML = newsData.vie.map(item => `
-            <div class="item-card">
-                <div class="item-card-header"><span>${item.client}</span><span>${item.date}</span></div>
+    // 3. News Vie Entreprise
+    const newsVie = document.getElementById('news-vie');
+    if (newsVie) {
+        newsVie.innerHTML = initialNews.vie.map(item => `
+            <div class="news-card">
+                <div class="news-meta"><span>${item.client}</span><span>${item.date}</span></div>
                 <h3>${item.title}</h3>
                 <p>${item.desc}</p>
+                <div style="margin-top: 12px;"><span class="badge ${item.type}">${item.tag}</span></div>
             </div>
         `).join('');
     }
 }
 
-// ─── 4. ÉCOUTEURS D'ÉVÉNEMENTS (Au chargement de la page) ───
+// 🎬 Initialisation au chargement du navigateur
 document.addEventListener('DOMContentLoaded', () => {
-    // On lance l'affichage des données
-    setupDashboard();
-
-    // Gestion du formulaire d'ajout de raccourci dans l'admin
-    const form = document.getElementById('form-add-shortcut');
-    if (form) {
-        form.addEventListener('submit', (e) => {
+    renderApp();
+    
+    // Écouteur du formulaire d'administration pour ajouter un raccourci
+    const adminForm = document.getElementById('form-add-shortcut');
+    if (adminForm) {
+        adminForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('sc-name').value;
             const url = document.getElementById('sc-url').value;
-
-            // Ajout dans le tableau et rafraîchissement
-            toolsData.push({ name, url });
-            setupDashboard();
             
-            // Reset et retour à l'accueil
-            form.reset();
-            window.go('home');
+            initialShortcuts.push({ name, url, icon: "🔗" });
+            renderApp();
+            adminForm.reset();
+            go('home');
         });
     }
 });
