@@ -1,9 +1,10 @@
-// Structures de données propres (Remplacement des émojis par des indicateurs épurés)
+// ─── 1. DONNÉES DE SIMULATION (Outils & Actus) ───
+// J'ai mis des vrais liens pour tester que les clics fonctionnent
 const toolsData = [
-    { name: "Monday Dashboard", url: "#" },
-    { name: "SuitePro-G", url: "#" },
-    { name: "Ivalua Client", url: "#" },
-    { name: "MS Teams Space", url: "#" }
+    { name: "Monday Dashboard", url: "https://monday.com" },
+    { name: "SuitePro-G", url: "https://google.com" },
+    { name: "Ivalua Client", url: "https://ivalua.com" },
+    { name: "MS Teams Space", url: "https://teams.microsoft.com" }
 ];
 
 const newsData = {
@@ -16,30 +17,49 @@ const newsData = {
     ]
 };
 
-// Gestion de la navigation inter-pages
-function go(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+// ─── 2. MOTEUR DE NAVIGATION (Accessible globalement) ───
+window.go = function(pageId) {
+    console.log("Navigation vers :", pageId); // Pour vérifier dans la console du navigateur
 
+    // 1. Gestion des pages (Vues)
+    const pages = document.querySelectorAll('.page');
+    if (pages.length > 0) {
+        pages.forEach(p => p.classList.remove('active'));
+    }
+    
     const targetPage = document.getElementById(`page-${pageId}`);
-    if (targetPage) targetPage.classList.add('active');
+    if (targetPage) {
+        targetPage.classList.add('active');
+    } else {
+        console.warn(`La page #page-${pageId} n'existe pas dans le HTML.`);
+    }
+
+    // 2. Gestion de l'état visuel des boutons de la Sidebar
+    const navItems = document.querySelectorAll('.nav-item');
+    if (navItems.length > 0) {
+        navItems.forEach(btn => btn.classList.remove('active'));
+    }
 
     const activeBtn = document.querySelector(`[data-target="${pageId}"]`);
-    if (activeBtn) activeBtn.classList.add('active');
-}
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+};
 
-// Injection propre des éléments dans le DOM
+// ─── 3. INJECTION DU CONTENU DANS LA PAGE ───
 function setupDashboard() {
+    // Injection des outils / raccourcis
     const scList = document.getElementById('sc-list');
     if (scList) {
         scList.innerHTML = toolsData.map(tool => `
-            <a href="${tool.url}" class="tool-card">
+            <a href="${tool.url}" target="_blank" class="tool-card">
                 <div class="icon-indicator"></div>
                 <span>${tool.name}</span>
             </a>
         `).join('');
     }
 
+    // Injection des news projets
     const projectsContainer = document.getElementById('news-projets');
     if (projectsContainer) {
         projectsContainer.innerHTML = newsData.projets.map(item => `
@@ -51,6 +71,7 @@ function setupDashboard() {
         `).join('');
     }
 
+    // Injection des news vie de l'entreprise
     const vieContainer = document.getElementById('news-vie');
     if (vieContainer) {
         vieContainer.innerHTML = newsData.vie.map(item => `
@@ -63,10 +84,12 @@ function setupDashboard() {
     }
 }
 
-// Initialisation
+// ─── 4. ÉCOUTEURS D'ÉVÉNEMENTS (Au chargement de la page) ───
 document.addEventListener('DOMContentLoaded', () => {
+    // On lance l'affichage des données
     setupDashboard();
 
+    // Gestion du formulaire d'ajout de raccourci dans l'admin
     const form = document.getElementById('form-add-shortcut');
     if (form) {
         form.addEventListener('submit', (e) => {
@@ -74,10 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('sc-name').value;
             const url = document.getElementById('sc-url').value;
 
+            // Ajout dans le tableau et rafraîchissement
             toolsData.push({ name, url });
             setupDashboard();
+            
+            // Reset et retour à l'accueil
             form.reset();
-            go('home');
+            window.go('home');
         });
     }
 });
