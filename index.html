@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyrias — Intranet</title>
+  <title>Cyrias — Portail Applicatif</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -15,7 +15,7 @@
     <div class="logo" onclick="go('home')">cy<span class="dot">.</span>rias</div>
     <div class="search-bar">
       <span class="search-icon">🔍</span>
-      <input type="search" placeholder="Rechercher un document, un outil...">
+      <input type="search" placeholder="Rechercher une application, un document...">
     </div>
     <div class="user-profile">
       <span class="username">Jean Dupont</span>
@@ -24,56 +24,68 @@
   </header>
 
   <nav id="bar-nav">
-    <button class="nav-btn active" data-target="home" onclick="go('home')">Accueil</button>
+    <button class="nav-btn active" data-target="home" onclick="go('home')">Tableau de bord</button>
     <button class="nav-btn" data-target="admin" onclick="go('admin')">Administration</button>
   </nav>
 
   <main id="main">
     
     <section id="page-home" class="page active">
-      <div class="hero">
-        <h1>Bonjour, l'équipe <span>CYRIAS</span> !</h1>
-        <p>Bienvenue sur votre nouvel intranet. Centralisez vos outils et suivez les actualités majeures du cabinet en un coup d'œil.</p>
+      
+      <div class="tdb-header">
+        <div>
+          <h1>Mon Espace <span>Cyrias</span></h1>
+          <p>Portail applicatif et actualités de votre cabinet.</p>
+        </div>
       </div>
 
-      <section class="shortcuts-section">
-        <h2 class="section-title">Vos raccourcis favoris</h2>
-        <div id="sc-list" class="shortcuts-grid">
+      <div class="tdb-layout">
+        
+        <div class="widget widget-apps">
+          <div class="widget-header">
+            <h2>Vos Applications</h2>
+            <button class="btn-icon" onclick="go('admin')" title="Ajouter une app">➕</button>
           </div>
-      </section>
-
-      <div class="news-grid">
-        <article class="news-column">
-          <h2 class="section-title">News projets</h2>
-          <div id="news-projets" class="news-container">
+          <div id="sc-list" class="app-grid">
             </div>
-        </article>
+        </div>
 
-        <article class="news-column">
-          <h2 class="section-title">Vie de l'entreprise</h2>
-          <div id="news-vie" class="news-container">
+        <div class="widget widget-news">
+          <div class="widget-header">
+            <h2>News Projets</h2>
+          </div>
+          <div id="news-projets" class="news-feed">
             </div>
-        </article>
+        </div>
+
+        <div class="widget widget-news">
+          <div class="widget-header">
+            <h2>Vie de l'entreprise</h2>
+          </div>
+          <div id="news-vie" class="news-feed">
+            </div>
+        </div>
+
       </div>
     </section>
 
     <section id="page-admin" class="page">
-      <div class="admin-box">
-        <header class="admin-header">
-          <h2>Console d'administration</h2>
-          <p>Ajoutez des modules et contrôlez les publications de la page d'accueil.</p>
+      <div class="widget admin-box">
+        <header class="widget-header" style="flex-direction: column; align-items: flex-start;">
+          <h2>Gestion du Portail</h2>
+          <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Ajoutez de nouvelles applications au tableau de bord.</p>
         </header>
         
         <form id="form-add-shortcut">
           <div class="form-group">
-            <label for="sc-name">Nom du raccourci</label>
+            <label for="sc-name">Nom de l'application</label>
             <input type="text" id="sc-name" placeholder="Ex: Salesforce" required>
           </div>
           <div class="form-group">
             <label for="sc-url">URL du lien</label>
             <input type="url" id="sc-url" placeholder="https://..." required>
           </div>
-          <button class="btn-submit" type="submit">Ajouter l'outil</button>
+          <button class="btn-submit" type="submit">Publier l'application</button>
         </form>
       </div>
     </section>
