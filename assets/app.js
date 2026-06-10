@@ -1,93 +1,82 @@
-// Données de simulation (Mock data basées sur le besoin Cyrias)
-const initialShortcuts = [
-    { name: "Monday", url: "#", icon: "📊" },
-    { name: "SuitePro-G", url: "#", icon: "🛠️" },
-    { name: "Ivalua", url: "#", icon: "🔷" },
-    { name: "MS Teams", url: "#", icon: "💬" }
+// Structures de données propres (Remplacement des émojis par des indicateurs épurés)
+const toolsData = [
+    { name: "Monday Dashboard", url: "#" },
+    { name: "SuitePro-G", url: "#" },
+    { name: "Ivalua Client", url: "#" },
+    { name: "MS Teams Space", url: "#" }
 ];
 
-const initialNews = {
+const newsData = {
     projets: [
-        { client: "Dixstone", date: "Juin 2026", title: "Signature d'un nouveau client", desc: "Déploiement des processus fournisseurs, sourcing, contrat et catalogues.", tag: "Projet", type: "blue" },
-        { client: "Audemars Piguet", date: "Mai 2026", title: "Mise en production du GRNI", desc: "Évolutions suite à la mise en production des modules demandes d'achats à la facturation.", tag: "Production", type: "blue" }
+        { client: "Dixstone Group", date: "Juin 2026", title: "Signature d'un nouveau client", desc: "Architecture globale du processus achat, intégration du module sourcing et contrats." },
+        { client: "Audemars Piguet", date: "Mai 2026", title: "Mise en production validée", desc: "Transition effectuée avec succès sur les périmètres de facturation usine." }
     ],
     vie: [
-        { client: "RH", date: "Récent", title: "Bienvenue à Rabah Teffahi", desc: "Nous avons le plaisir d'accueillir Rabah qui rejoint l'équipe de Massy en tant que consultant.", tag: "Équipe", type: "green" }
+        { client: "Ressources Humaines", date: "Ce matin", title: "Arrivée de Rabah Teffahi", desc: "L'équipe conseil s'agrandit à Massy. Bienvenue à notre nouveau Consultant Data Analyst." }
     ]
 };
 
-// 🧭 Système de Navigation Interne
+// Gestion de la navigation inter-pages
 function go(pageId) {
-    // Gestion des classes actives sur les pages
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
     const targetPage = document.getElementById(`page-${pageId}`);
     if (targetPage) targetPage.classList.add('active');
 
-    // Gestion de l'état actif sur les boutons de navigation
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-target') === pageId) {
-            btn.classList.add('active');
-        }
-    });
+    const activeBtn = document.querySelector(`[data-target="${pageId}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
 }
 
-// 💉 Hydratation de l'interface
-function renderApp() {
-    // 1. Raccourcis
+// Injection propre des éléments dans le DOM
+function setupDashboard() {
     const scList = document.getElementById('sc-list');
     if (scList) {
-        scList.innerHTML = initialShortcuts.map(sc => `
-            <a href="${sc.url}" class="shortcut-card">
-                <span>${sc.icon}</span> ${sc.name}
+        scList.innerHTML = toolsData.map(tool => `
+            <a href="${tool.url}" class="tool-card">
+                <div class="icon-indicator"></div>
+                <span>${tool.name}</span>
             </a>
         `).join('');
     }
 
-    // 2. News Projets
-    const newsProjets = document.getElementById('news-projets');
-    if (newsProjets) {
-        newsProjets.innerHTML = initialNews.projets.map(item => `
-            <div class="news-card">
-                <div class="news-meta"><span>${item.client}</span><span>${item.date}</span></div>
+    const projectsContainer = document.getElementById('news-projets');
+    if (projectsContainer) {
+        projectsContainer.innerHTML = newsData.projets.map(item => `
+            <div class="item-card">
+                <div class="item-card-header"><span>${item.client}</span><span>${item.date}</span></div>
                 <h3>${item.title}</h3>
                 <p>${item.desc}</p>
-                <div style="margin-top: 12px;"><span class="badge ${item.type}">${item.tag}</span></div>
             </div>
         `).join('');
     }
 
-    // 3. News Vie Entreprise
-    const newsVie = document.getElementById('news-vie');
-    if (newsVie) {
-        newsVie.innerHTML = initialNews.vie.map(item => `
-            <div class="news-card">
-                <div class="news-meta"><span>${item.client}</span><span>${item.date}</span></div>
+    const vieContainer = document.getElementById('news-vie');
+    if (vieContainer) {
+        vieContainer.innerHTML = newsData.vie.map(item => `
+            <div class="item-card">
+                <div class="item-card-header"><span>${item.client}</span><span>${item.date}</span></div>
                 <h3>${item.title}</h3>
                 <p>${item.desc}</p>
-                <div style="margin-top: 12px;"><span class="badge ${item.type}">${item.tag}</span></div>
             </div>
         `).join('');
     }
 }
 
-// 🎬 Initialisation au chargement du DOM
+// Initialisation
 document.addEventListener('DOMContentLoaded', () => {
-    renderApp();
-    
-    // Écouteur du formulaire d'administration
-    const adminForm = document.getElementById('form-add-shortcut');
-    if (adminForm) {
-        adminForm.addEventListener('submit', (e) => {
+    setupDashboard();
+
+    const form = document.getElementById('form-add-shortcut');
+    if (form) {
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('sc-name').value;
             const url = document.getElementById('sc-url').value;
-            
-            initialShortcuts.push({ name, url, icon: "🔗" });
-            renderApp();
-            adminForm.reset();
+
+            toolsData.push({ name, url });
+            setupDashboard();
+            form.reset();
             go('home');
         });
     }
