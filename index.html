@@ -1,259 +1,176 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Cyrias — Intranet</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Cyrias — Intranet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<!-- ══════════ BARRE MARQUE ══════════ -->
 <header id="bar-brand">
   <div class="b-logo">
     <span class="b-logo-cy">cy</span><span class="b-logo-dot">.</span><span class="b-logo-cy">rias</span>
   </div>
   <div class="b-sep"></div>
-  <div class="b-search">
+  
+  <div class="b-search" aria-label="Recherche globale">
     <svg fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" placeholder="Rechercher une application, un document…">
+    <input type="search" placeholder="Rechercher un document, un outil...">
   </div>
+  
   <div class="b-spacer"></div>
+  
   <div class="b-actions">
-    <button class="b-icon-btn" title="Notifications">
+    <button class="b-icon-btn" title="Notifications" aria-label="Voir les notifications">
       <svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <span class="b-notif"></span>
     </button>
     <div class="b-sep"></div>
-    <div class="b-avatar" id="user-av">AM</div>
-    <span class="b-username" id="user-name">Alice Martin</span>
-    <div class="b-sep"></div>
-    <select id="profile-switcher" onchange="switchProfile(this.value)">
-      <option value="admin">🛠 Administrateur</option>
-      <option value="manager">📊 Manager</option>
-      <option value="consultant">👤 Consultant</option>
-      <option value="guest">👁 Invité</option>
-    </select>
+    <div class="b-avatar" id="user-av">JD</div>
+    <span class="b-username" id="user-name">Jean Dupont</span>
   </div>
 </header>
 
-<!-- ══════════ BARRE NAVIGATION ══════════ -->
-<nav id="bar-nav"></nav>
+<nav id="bar-nav">
+  <button class="nav-btn active" onclick="go('home')">Accueil</button>
+  <button class="nav-btn" onclick="go('admin')">Administration</button>
+</nav>
 
-<!-- ══════════ PAGES ══════════ -->
 <main id="main">
 
-  <!-- HOME -->
-  <div id="page-home" class="page">
-    <div class="hero">
+  <section id="page-home" class="page active">
+    <header class="hero">
       <div class="hero-content">
-        <h1>INTRANET <em>CYRIAS</em></h1>
-        <p class="hero-sub">Bienvenue sur l'intranet Cyrias ! Vous trouverez ici toutes les informations utiles concernant l'organisation interne et vos projets.</p>
+        <h1><span id="greeting">Bonjour</span>, l'équipe <em>CYRIAS</em> !</h1>
+        <p class="hero-sub">Bienvenue sur votre espace. Retrouvez ici vos outils quotidiens et les dernières actualités de l'entreprise.</p>
       </div>
-    </div>
-    <div id="sc-bar" class="sc-bar">
-      <span class="sc-bar-label">Vos raccourcis :</span>
-      <div id="sc-list" class="sc-list"></div>
-    </div>
+    </header>
+
+    <section id="sc-bar" class="sc-bar">
+      <span class="sc-bar-label">Raccourcis rapides :</span>
+      <div id="sc-list" class="sc-list">
+        </div>
+    </section>
+
     <div class="page-wrap">
       <div class="home-cols">
-        <div>
+        
+        <article class="news-column">
           <div class="col-title"><span class="col-title-txt">News <span>projets</span></span></div>
-          <div id="news-projets"></div>
-          <button class="see-all" onclick="go('actus')">Voir tout</button>
-        </div>
-        <div>
+          <div id="news-projets" class="news-container">
+            <p class="empty-state" style="color:var(--text2); font-size: 13px;">Aucune actualité projet récente.</p>
+          </div>
+        </article>
+
+        <article class="news-column">
           <div class="col-title"><span class="col-title-txt">Vie de <span>l'entreprise</span></span></div>
-          <div id="news-vie"></div>
-          <button class="see-all" onclick="go('actus')">Voir tout</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- APPLICATIONS -->
-  <div id="page-apps" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>Applications</h1><p>Toutes vos applications accessibles depuis un seul endroit</p></div>
-      <div id="apps-grid" class="g-apps"></div>
-    </div>
-  </div>
-
-  <!-- PROJETS -->
-  <div id="page-projets" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>Projets clients</h1><p>Suivi des missions en cours et archivées</p></div>
-      <div class="card">
-        <div class="proj-row"><div class="proj-ico" style="background:#e3f2fd">🔷</div><div class="proj-info"><h4>Dixstone Group</h4><p>Démarrage · Ivalua · Perenco</p></div><span class="pstatus a">Démarrage</span></div>
-        <div class="proj-row"><div class="proj-ico" style="background:#f3e5f5">⌚</div><div class="proj-info"><h4>Audemars Piguet</h4><p>Production · GRNI · Modules achats</p></div><span class="pstatus b">Production</span></div>
-        <div class="proj-row"><div class="proj-ico" style="background:#fff8e1">🏦</div><div class="proj-info"><h4>BNP Paribas</h4><p>Phase 2 · Contrats & référentiel</p></div><span class="pstatus c">Phase 2</span></div>
-        <div class="proj-row"><div class="proj-ico" style="background:#e8f5e9">🏭</div><div class="proj-info"><h4>TotalEnergies</h4><p>Phase 1 · Sourcing & catalogues</p></div><span class="pstatus a">En cours</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RH -->
-  <div id="page-rh" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>Ressources Humaines</h1><p>Congés, paie, formations et documents RH</p></div>
-      <div class="g2">
-        <div class="rh-card"><div class="rh-ico" style="background:#e8f5e9">🗓</div><div class="rh-b"><h3>Congés & Absences</h3><p>Posez vos congés, consultez le planning d'équipe.</p><p class="rh-kv">Solde : <strong>18 jours</strong></p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#fce4ec">💶</div><div class="rh-b"><h3>Bulletins de paie</h3><p>Accédez à vos bulletins depuis votre espace sécurisé.</p><p class="rh-kv">Dernier : <strong>Mai 2025</strong></p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#e3f2fd">🎓</div><div class="rh-b"><h3>Formations</h3><p>Plan de formation, certifications Ivalua, e-learning.</p><p class="rh-kv">En cours : <strong>3 modules</strong></p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#fff8e1">📋</div><div class="rh-b"><h3>Documents RH</h3><p>Contrats, avenants, attestations employeur.</p><p class="rh-kv">Récents : <strong>2</strong></p></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CSE -->
-  <div id="page-cse" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>CSE</h1><p>Avantages et activités du Comité Social et Économique</p></div>
-      <div class="g2">
-        <div class="rh-card"><div class="rh-ico" style="background:#fff8e1">🎟</div><div class="rh-b"><h3>Bons cadeaux</h3><p>Commande de bons cadeaux pour Noël et événements annuels.</p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#e8f5e9">⚽</div><div class="rh-b"><h3>Activités sportives</h3><p>Football, running, yoga, pétanque — 5 clubs actifs.</p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#e3f2fd">🏖</div><div class="rh-b"><h3>Voyages & séjours</h3><p>Offres vacances et séjours négociés par le CSE.</p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#fce4ec">🎭</div><div class="rh-b"><h3>Culture & loisirs</h3><p>Cinéma, théâtre et parcs d'attractions à tarifs réduits.</p></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- IVALUA -->
-  <div id="page-ivalua" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>IVALUA</h1><p>Documentation, formation et support sur la solution Ivalua</p></div>
-      <div class="g3">
-        <div class="rh-card"><div class="rh-ico" style="background:#e3f2fd">📘</div><div class="rh-b"><h3>Documentation</h3><p>Guides fonctionnels, release notes et architecture.</p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#e8f5e9">🎓</div><div class="rh-b"><h3>Formations Ivalua</h3><p>Parcours certifiants et vidéos e-learning.</p></div></div>
-        <div class="rh-card"><div class="rh-ico" style="background:#fce4ec">🛠</div><div class="rh-b"><h3>Support</h3><p>Tickets, incidents et contacts support éditeur.</p></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TRUCS -->
-  <div id="page-trucs" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>Trucs et astuces</h1><p>Bonnes pratiques, raccourcis et modèles internes</p></div>
-      <div class="card">
-        <div class="proj-row"><div class="proj-ico" style="background:#e8f5e9">📘</div><div class="proj-info"><h4>Guide Ivalua — Prise en main</h4><p>Tutoriel complet pour les nouveaux consultants</p></div><span class="ni-tag green">Guide</span></div>
-        <div class="proj-row"><div class="proj-ico" style="background:#e3f2fd">⌨️</div><div class="proj-info"><h4>Raccourcis clavier SuitePro</h4><p>Les 20 raccourcis les plus utiles</p></div><span class="ni-tag blue">Astuce</span></div>
-        <div class="proj-row"><div class="proj-ico" style="background:#fff8e1">📊</div><div class="proj-info"><h4>Modèles de livrables</h4><p>Templates Word et PPT pour vos présentations clients</p></div><span class="ni-tag orange">Template</span></div>
-        <div class="proj-row"><div class="proj-ico" style="background:#fce4ec">🔒</div><div class="proj-info"><h4>Politique de sécurité IT</h4><p>Règles de protection des données et mots de passe</p></div><span class="ni-tag blue">Sécurité</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ACTUS -->
-  <div id="page-actus" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>Actualités</h1><p>Vie de l'entreprise, clients et équipes</p></div>
-      <div id="actus-all"></div>
-    </div>
-  </div>
-
-  <!-- ADMIN -->
-  <div id="page-admin" class="page">
-    <div class="page-wrap">
-      <div class="page-hd"><h1>Administration</h1><p>Configuration du portail — raccourcis, actualités, permissions</p></div>
-      <div class="admin-tabs">
-        <div class="admin-tab active" onclick="showAdminPane('raccourcis',this)">Raccourcis</div>
-        <div class="admin-tab" onclick="showAdminPane('actualites',this)">Actualités</div>
-        <div class="admin-tab" onclick="showAdminPane('permissions',this)">Permissions</div>
-        <div class="admin-tab" onclick="showAdminPane('navigation',this)">Navigation</div>
-      </div>
-
-      <!-- Pane Raccourcis -->
-      <div id="pane-raccourcis" class="admin-pane active">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-          <p style="font-size:13px;color:var(--text2)">Activez / désactivez et réordonnez les raccourcis de la page d'accueil.</p>
-          <button class="btn accent sm" onclick="openModal('modal-add-sc')">+ Ajouter</button>
-        </div>
-        <div id="sc-editor"></div>
-        <button class="btn prim" style="margin-top:14px" onclick="saveShortcuts()">Sauvegarder</button>
-      </div>
-
-      <!-- Pane Actualités -->
-      <div id="pane-actualites" class="admin-pane">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-          <p style="font-size:13px;color:var(--text2)">Gérez les actualités affichées sur la page d'accueil et la page Actualités.</p>
-          <button class="btn accent sm" onclick="openModal('modal-add-news')">+ Publier</button>
-        </div>
-        <div id="news-editor"></div>
-      </div>
-
-      <!-- Pane Permissions -->
-      <div id="pane-permissions" class="admin-pane">
-        <div class="admin-2col">
-          <div class="card" style="padding:12px">
-            <p style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);padding:4px 6px 10px">Profils</p>
-            <div id="admin-profile-list"></div>
+          <div id="news-vie" class="news-container">
+             <p class="empty-state" style="color:var(--text2); font-size: 13px;">Aucune actualité d'entreprise récente.</p>
           </div>
-          <div class="card" style="padding:0;overflow:hidden">
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border)">
-              <p style="font-size:13px;font-weight:700;color:var(--primary)" id="perm-title">Permissions</p>
-              <button class="btn prim sm" onclick="showToast('Permissions sauvegardées ✓')">Sauvegarder</button>
-            </div>
-            <div style="overflow-x:auto"><table class="ptable" id="perm-table"></table></div>
-          </div>
-        </div>
-      </div>
+        </article>
 
-      <!-- Pane Navigation -->
-      <div id="pane-navigation" class="admin-pane">
-        <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Activez ou masquez les entrées de menu selon vos besoins.</p>
-        <div id="nav-editor"></div>
-        <button class="btn prim" style="margin-top:14px" onclick="showToast('Navigation sauvegardée ✓')">Sauvegarder</button>
       </div>
     </div>
-  </div>
+  </section>
 
-</main><!-- /main -->
+  <section id="page-admin" class="page" style="display:none;">
+    <div class="page-wrap">
+      
+      <header class="page-hd">
+        <h1>Administration du portail</h1>
+        <p>Gérez les raccourcis mis en avant et publiez de nouvelles actualités.</p>
+      </header>
 
-<!-- ══════════ MODALS ══════════ -->
-<div id="modal-add-sc" class="modal-overlay">
+      <nav class="admin-tabs">
+        <button class="admin-tab active" onclick="showAdminPane('raccourcis',this)">Raccourcis</button>
+        <button class="admin-tab" onclick="showAdminPane('actualites',this)">Actualités</button>
+      </nav>
+
+      <article id="pane-raccourcis" class="admin-pane active">
+        <header style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px">
+          <p style="font-size:13px; color:var(--text2)">Activez, désactivez ou réordonnez les raccourcis de la page d'accueil.</p>
+          <button class="btn accent sm" onclick="openModal('modal-add-sc')">+ Nouveau raccourci</button>
+        </header>
+        
+        <div id="sc-editor" class="admin-list-container">
+          </div>
+        
+        <footer style="margin-top:20px;">
+          <button class="btn prim" onclick="saveShortcuts()">Enregistrer les modifications</button>
+        </footer>
+      </article>
+
+      <article id="pane-actualites" class="admin-pane" style="display:none;">
+        <header style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px">
+          <p style="font-size:13px; color:var(--text2)">Publiez ou supprimez les actualités visibles par les collaborateurs.</p>
+          <button class="btn accent sm" onclick="openModal('modal-add-news')">+ Rédiger une actualité</button>
+        </header>
+        
+        <div id="news-editor" class="admin-list-container">
+          </div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+
+<dialog id="modal-add-sc" class="modal-overlay">
   <div class="modal">
-    <div class="modal-hd"><h3>Ajouter un raccourci</h3><button class="modal-close" onclick="closeModal('modal-add-sc')">×</button></div>
-    <div class="field"><label>Nom</label><input type="text" id="sc-new-name" placeholder="Ex : Ivalua"></div>
-    <div class="field"><label>URL</label><input type="text" id="sc-new-url" placeholder="https://…"></div>
-    <div class="field"><label>Icône (emoji)</label><input type="text" id="sc-new-icon" placeholder="🔷" maxlength="4"></div>
-    <div class="modal-ft">
+    <header class="modal-hd">
+      <h3>Ajouter un raccourci</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-sc')" aria-label="Fermer">×</button>
+    </header>
+    <div class="modal-body">
+      <div class="field"><label for="sc-new-name">Nom de l'outil</label><input type="text" id="sc-new-name" placeholder="Ex : Ivalua"></div>
+      <div class="field"><label for="sc-new-url">Lien (URL)</label><input type="url" id="sc-new-url" placeholder="https://…"></div>
+      <div class="field"><label for="sc-new-icon">Icône (emoji)</label><input type="text" id="sc-new-icon" placeholder="🔷" maxlength="4"></div>
+    </div>
+    <footer class="modal-ft">
       <button class="btn sm" onclick="closeModal('modal-add-sc')">Annuler</button>
       <button class="btn prim sm" onclick="addShortcut()">Ajouter</button>
-    </div>
+    </footer>
   </div>
-</div>
+</dialog>
 
-<div id="modal-add-news" class="modal-overlay">
+<dialog id="modal-add-news" class="modal-overlay">
   <div class="modal">
-    <div class="modal-hd"><h3>Publier une actualité</h3><button class="modal-close" onclick="closeModal('modal-add-news')">×</button></div>
-    <div class="field"><label>Titre</label><input type="text" id="news-new-title" placeholder="Ex : Nouveau client signé"></div>
-    <div class="field"><label>Résumé</label><textarea id="news-new-excerpt" placeholder="Quelques phrases décrivant l'actualité…"></textarea></div>
-    <div class="field"><label>Catégorie</label>
-      <select id="news-new-cat">
-        <option value="projet">Projet client</option>
-        <option value="vie">Vie de l'entreprise</option>
-      </select>
+    <header class="modal-hd">
+      <h3>Publier une actualité</h3>
+      <button class="modal-close" onclick="closeModal('modal-add-news')" aria-label="Fermer">×</button>
+    </header>
+    <div class="modal-body">
+      <div class="field"><label for="news-new-title">Titre</label><input type="text" id="news-new-title" placeholder="Ex : Lancement Phase 2 BNP"></div>
+      <div class="field"><label for="news-new-excerpt">Contenu</label><textarea id="news-new-excerpt" placeholder="Détails de l'actualité…"></textarea></div>
+      <div class="field"><label for="news-new-cat">Emplacement</label>
+        <select id="news-new-cat">
+          <option value="projet">Projet client</option>
+          <option value="vie">Vie de l'entreprise</option>
+        </select>
+      </div>
     </div>
-    <div class="field"><label>Tag</label>
-      <select id="news-new-tag">
-        <option value="green|Projet">Projet (vert)</option>
-        <option value="blue|Production">Production (bleu)</option>
-        <option value="orange|Équipe">Équipe (orange)</option>
-      </select>
-    </div>
-    <div class="field"><label>Initiales / Logo</label><input type="text" id="news-new-init" placeholder="Ex : JD" maxlength="3"></div>
-    <div class="modal-ft">
+    <footer class="modal-ft">
       <button class="btn sm" onclick="closeModal('modal-add-news')">Annuler</button>
       <button class="btn prim sm" onclick="addNews()">Publier</button>
-    </div>
+    </footer>
   </div>
-</div>
+</dialog>
 
-<div id="toast"></div>
+<div id="toast" role="alert" aria-live="polite"></div>
 
-<!-- Scripts -->
 <script src="config.js"></script>
 <script src="assets/app.js"></script>
+<script>
+  // Petit script de courtoisie (Bonjour/Bonsoir)
+  document.addEventListener('DOMContentLoaded', () => {
+    const hour = new Date().getHours();
+    const greetingEl = document.getElementById('greeting');
+    if (greetingEl) {
+      greetingEl.innerText = (hour >= 18 || hour < 5) ? 'Bonsoir' : 'Bonjour';
+    }
+  });
+</script>
 </body>
 </html>
